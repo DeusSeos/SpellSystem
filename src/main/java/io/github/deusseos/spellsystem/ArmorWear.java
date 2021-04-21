@@ -5,21 +5,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import java.util.List;
 
 public class ArmorWear implements Listener {
+
+    SpellSystem main = SpellSystem.getPlugin(SpellSystem.class);
 
     @EventHandler
     public void armorEquip(ArmorEquipEvent e){
         Player player = e.getPlayer();
-        List<String> soulLore = null;
+//        List<String> soulLore = null;
         if (!ArmorListener.isAirOrNull(e.getOldArmorPiece())) {
             if (e.getOldArmorPiece().hasItemMeta()) {
                 try {
                     if (e.getOldArmorPiece().getItemMeta().hasLore()) {
-                        soulLore.addAll(Utils.soulList(e.getOldArmorPiece().lore()));
                         int slot = e.getType().getSlot();
-
+                        Utils.removeSoul(main.souls, slot, player.getUniqueId());
                     }
                 } catch (NullPointerException exception) {
                     Bukkit.getConsoleSender().sendMessage("Old Armor");
@@ -32,7 +32,10 @@ public class ArmorWear implements Listener {
             if (e.getNewArmorPiece().hasItemMeta()) {
                 try {
                     if (e.getNewArmorPiece().getItemMeta().hasLore()) {
-                        soulLore.addAll(Utils.soulList(e.getNewArmorPiece().lore()));
+                        Soul soul = Utils.toSoul(e.getNewArmorPiece().lore());
+                        int slot = e.getType().getSlot();
+                        soul.setSlot(slot);
+                        Utils.addSoul(main.souls, soul, player.getUniqueId());
                     }
                 } catch (NullPointerException exception) {
                     Bukkit.getConsoleSender().sendMessage("New Armor");

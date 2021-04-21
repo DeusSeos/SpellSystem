@@ -1,0 +1,22 @@
+# All blocks with an inventory or any blocks that when right clicked shouldn't equip armor.
+blocked:
+  - BEACON
+  - CRAFTING_TABLE
+  - ENCHANTMENT_TABLE
+  - ENDER_CHEST
+  - DIODE_BLOCK_OFF
+  - DIODE_BLOCK_ON
+  - REDSTONE_COMPARATOR_OFF
+  - REDSTONE_COMPARATOR_ON
+  - LEVER
+  - DAYLIGHT_DETECTOR_INVERTED
+  - DAYLIGHT_DETECTOR
+  - CARTOGRAPHY_TABLE
+  - ANVIL
+  - CHIPPED_ANVIL
+  - DAMAGED_ANVIL
+  - GRINDSTONE
+  - LOOM
+  - STONECUTTER
+  - BELL
+  - SMITHING_TABLE

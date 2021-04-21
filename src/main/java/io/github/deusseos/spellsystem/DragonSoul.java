@@ -7,9 +7,10 @@ public class DragonSoul implements Soul{
     final int soulChargeTime = 160;
     final int soulID = 3;
     Sound chargeSound = Sound.ENTITY_WITHER_SKELETON_AMBIENT;
-    final double volume = .5;
-    final double pitch = 1.5;
+    final float volume = .5f;
+    final float pitch = 1.5f;
     private int slot;
+    private boolean charged;
 
     @Override
     public int getSoulID() {
@@ -19,7 +20,10 @@ public class DragonSoul implements Soul{
     @Override
     public int getSlot(){ return slot; }
 
-
+    public boolean isCharged() {
+        return charged;
+    }
+    
     @Override
     public void setSlot(int playerSlot){
         this.slot = playerSlot;
@@ -37,21 +41,23 @@ public class DragonSoul implements Soul{
 
     @Override
     public void tickDown() {
-        if (soulTicks > 0)
+        if (!charged && soulTicks >= 0)
             --soulTicks;
-        else
+        else {
             soulTicks = soulChargeTime;
-    }
+            charged = true;
+        }
 
+    }
     public Sound getChargeSound() {
         return chargeSound;
     }
 
-    public double getPitch() {
+    public float getPitch() {
         return pitch;
     }
 
-    public double getVolume(){
+    public float getVolume(){
         return volume;
     }
 

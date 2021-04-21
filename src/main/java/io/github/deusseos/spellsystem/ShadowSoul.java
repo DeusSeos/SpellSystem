@@ -7,9 +7,10 @@ public class ShadowSoul implements Soul {
     final int soulChargeTime = 140;
     final int soulID = 2;
     Sound chargeSound = Sound.ENTITY_BLAZE_AMBIENT;
-    final double volume = .5;
-    final double pitch = 1.5;
+    final float volume = .5f;
+    final float pitch = 1.5f;
     private int slot = -1;
+    private boolean charged;
 
 
     @Override
@@ -20,6 +21,9 @@ public class ShadowSoul implements Soul {
     @Override
     public int getSlot(){ return slot; }
 
+    public boolean isCharged() {
+        return charged;
+    }
 
     @Override
     public void setSlot(int playerSlot){
@@ -39,23 +43,27 @@ public class ShadowSoul implements Soul {
 
     @Override
     public void tickDown() {
-        if (soulTicks > 0)
+        if (!charged && soulTicks >= 0)
             --soulTicks;
-        else
+        else {
             soulTicks = soulChargeTime;
+            charged = true;
+        }
+
     }
 
     public Sound getChargeSound() {
         return chargeSound;
     }
 
-    public double getPitch() {
+    public float getPitch() {
         return pitch;
     }
 
-    public double getVolume(){
+    public float getVolume(){
         return volume;
     }
+
 
     @Override
     public String toString() {

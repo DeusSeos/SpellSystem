@@ -5,16 +5,17 @@ import org.bukkit.Sound;
 /***
  *
  */
-public interface Soul {
-
+public interface Soul{
 
     int getSoulID();
     int getSlot();
+    boolean isCharged();
     void setSlot(int Playerslot);
     int getSoulTicks();
     int getSoulChargeTime();
     void tickDown();
     Sound getChargeSound();
-
+    public float getPitch();
+    public float getVolume();
 
 }

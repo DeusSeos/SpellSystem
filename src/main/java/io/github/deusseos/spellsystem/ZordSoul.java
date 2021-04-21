@@ -7,12 +7,28 @@ public class ZordSoul implements Soul{
     final int soulChargeTime = 140;
     final int soulID = 0;
     Sound chargeSound = Sound.ENTITY_ENDERMAN_AMBIENT;
-    final double volume = .5;
-    final double pitch = 1.5;
+    final float volume = .5f;
+    final float pitch = 1.5f;
+    private int slot = -1;
+    private boolean charged;
 
     @Override
     public int getSoulID() {
         return soulID;
+    }
+
+    @Override
+    public int getSlot() {
+        return slot;
+    }
+
+    @Override
+    public void setSlot(int Playerslot) {
+        slot = Playerslot;
+    }
+
+    public boolean isCharged() {
+        return charged;
     }
 
     @Override
@@ -27,21 +43,24 @@ public class ZordSoul implements Soul{
 
     @Override
     public void tickDown() {
-        if (soulTicks > 0)
+        if (!charged && soulTicks >= 0)
             --soulTicks;
-        else
+        else {
             soulTicks = soulChargeTime;
-    }
+            charged = true;
+        }
 
+    }
     public Sound getChargeSound() {
         return chargeSound;
     }
 
-    public double getPitch() {
+
+    public float getPitch() {
         return pitch;
     }
 
-    public double getVolume(){
+    public float getVolume(){
         return volume;
     }
 
@@ -49,4 +68,6 @@ public class ZordSoul implements Soul{
     public String toString() {
         return String.format("SoulID: %d, soulTicks: %d, soulChargeTime: %d", soulID, soulTicks, soulChargeTime);
     }
+
+
 }

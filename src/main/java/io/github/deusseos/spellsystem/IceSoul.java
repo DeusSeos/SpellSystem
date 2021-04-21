@@ -8,9 +8,10 @@ public class IceSoul implements Soul {
     final int soulChargeTime = 160;
     final int soulID = 0;
     Sound chargeSound = Sound.ENTITY_BAT_TAKEOFF;
-    final double volume = .5;
-    final double pitch = 1.5;
+    final float volume = .5f;
+    final float pitch = 1.5f;
     private int slot;
+    private boolean charged;
 
     @Override
     public int getSoulID() {
@@ -19,7 +20,6 @@ public class IceSoul implements Soul {
 
     @Override
     public int getSlot(){ return slot; }
-
 
     @Override
     public void setSlot(int playerSlot){
@@ -36,23 +36,30 @@ public class IceSoul implements Soul {
         return soulTicks;
     }
 
+    public boolean isCharged() {
+        return charged;
+    }
+
     @Override
     public void tickDown() {
-        if (soulTicks > 0)
+        if (!charged && soulTicks >= 0)
             --soulTicks;
-        else
+        else {
             soulTicks = soulChargeTime;
+            charged = true;
+        }
+
     }
 
     public Sound getChargeSound() {
         return chargeSound;
     }
 
-    public double getPitch() {
+    public float getPitch() {
         return pitch;
     }
 
-    public double getVolume(){
+    public float getVolume(){
         return volume;
     }
 

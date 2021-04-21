@@ -2,13 +2,14 @@ package io.github.deusseos.spellsystem;
 
 import org.bukkit.Sound;
 
-public class FireSoul implements Soul{
+public class FireSoul implements Soul {
+    boolean charged = false;
     int soulTicks = 160;
     final int soulChargeTime = 160;
     final int soulID = 1;
     Sound chargeSound = Sound.ENTITY_BLAZE_AMBIENT;
-    final double volume = .5;
-    final double pitch = 1.5;
+    final float volume = .5f;
+    final float pitch = 1.5f;
     private int slot;
 
 
@@ -18,11 +19,16 @@ public class FireSoul implements Soul{
     }
 
     @Override
-    public int getSlot(){ return slot; }
+    public int getSlot() {
+        return slot;
+    }
 
+    public boolean isCharged() {
+        return charged;
+    }
 
     @Override
-    public void setSlot(int playerSlot){
+    public void setSlot(int playerSlot) {
         this.slot = playerSlot;
     }
 
@@ -38,21 +44,24 @@ public class FireSoul implements Soul{
 
     @Override
     public void tickDown() {
-        if (soulTicks > 0)
+        if (!charged && soulTicks >= 0)
             --soulTicks;
-        else
+        else {
             soulTicks = soulChargeTime;
+            charged = true;
+        }
+
     }
 
     public Sound getChargeSound() {
         return chargeSound;
     }
 
-    public double getPitch() {
+    public float getPitch() {
         return pitch;
     }
 
-    public double getVolume(){
+    public float getVolume() {
         return volume;
     }
 
