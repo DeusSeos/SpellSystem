@@ -1,0 +1,5 @@
+name: SpellSystem
+version: ${project.version}
+main: io.github.deusseos.spellsystem.SpellSystem
+api-version: 1.16
+authors: [ Seoss ]
