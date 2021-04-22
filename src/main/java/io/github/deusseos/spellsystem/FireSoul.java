@@ -3,33 +3,18 @@ package io.github.deusseos.spellsystem;
 import org.bukkit.Sound;
 
 public class FireSoul implements Soul {
-    boolean charged = false;
     int soulTicks = 160;
     final int soulChargeTime = 160;
     final int soulID = 1;
     Sound chargeSound = Sound.ENTITY_BLAZE_AMBIENT;
-    final float volume = .5f;
-    final float pitch = 1.5f;
-    private int slot;
-
+    final float volume = 1f;
+    final float pitch = 1f;
+    private int charges = 0;
+    private int maxCharge = 0;
 
     @Override
     public int getSoulID() {
         return soulID;
-    }
-
-    @Override
-    public int getSlot() {
-        return slot;
-    }
-
-    public boolean isCharged() {
-        return charged;
-    }
-
-    @Override
-    public void setSlot(int playerSlot) {
-        this.slot = playerSlot;
     }
 
     @Override
@@ -43,31 +28,42 @@ public class FireSoul implements Soul {
     }
 
     @Override
-    public void tickDown() {
-        if (!charged && soulTicks >= 0)
-            --soulTicks;
-        else {
-            soulTicks = soulChargeTime;
-            charged = true;
+    public boolean isFullyCharged(){return charges == maxCharge; }
+
+    @Override
+    public boolean hasCharge() { return charges > 0; }
+
+    @Override
+    public int getCharges() { return charges; }
+
+    @Override
+    public void setCharges(int nCharges) {
+        if (maxCharge+nCharges > 0){
+            maxCharge += nCharges;
         }
-
-    }
-
-    public Sound getChargeSound() {
-        return chargeSound;
-    }
-
-    public float getPitch() {
-        return pitch;
-    }
-
-    public float getVolume() {
-        return volume;
     }
 
     @Override
+    public void tickDown() {
+        if (charges < maxCharge) {
+            if (soulTicks >= 0) {
+                --soulTicks;
+            } else {
+                soulTicks = soulChargeTime;
+                charges += 1;
+            }
+        }
+    }
+
+    public Sound getChargeSound() { return chargeSound; }
+
+    public float getPitch() { return pitch; }
+
+    public float getVolume() { return volume; }
+
+    @Override
     public String toString() {
-        return String.format("SoulID: %d, soulTicks: %d, soulChargeTime: %d", soulID, soulTicks, soulChargeTime);
+        return String.format("SoulID: %d, soulTicks: %d, soulChargeTime: %d Charges: %d MaxCharges: %d", soulID, soulTicks, soulChargeTime, charges, maxCharge);
     }
 
 }

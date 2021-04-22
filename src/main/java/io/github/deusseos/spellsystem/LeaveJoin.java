@@ -5,7 +5,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class LeaveJoin implements Listener {
@@ -15,13 +17,13 @@ public class LeaveJoin implements Listener {
     @EventHandler
     public void playerJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
-        ItemStack[] armor = event.getPlayer().getInventory().getArmorContents();
-        for (ItemStack armorPiece:armor) {
-            Soul soul = Utils.toSoul(armorPiece.lore());
-            int slot = ArmorType.matchType(armorPiece).getSlot();
-            soul.setSlot(slot);
-            Utils.addSoul(main.souls, soul, player.getUniqueId());
-        }
+        List<Soul> soulList = new ArrayList<>();
+        soulList.add(0, new IceSoul());
+        soulList.add(1, new FireSoul());
+        soulList.add(2, new ShadowSoul());
+        soulList.add(3, new DragonSoul());
+        soulList.add(4, new ZordSoul());
+        main.souls.putIfAbsent(player.getUniqueId(), soulList);
     }
     @EventHandler
     public void playerLeave(PlayerQuitEvent event){

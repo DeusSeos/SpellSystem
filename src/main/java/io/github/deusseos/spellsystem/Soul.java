@@ -8,9 +8,10 @@ import org.bukkit.Sound;
 public interface Soul{
 
     int getSoulID();
-    int getSlot();
-    boolean isCharged();
-    void setSlot(int Playerslot);
+    boolean hasCharge();
+    boolean isFullyCharged();
+    int getCharges();
+    void setCharges(int nCharges);
     int getSoulTicks();
     int getSoulChargeTime();
     void tickDown();

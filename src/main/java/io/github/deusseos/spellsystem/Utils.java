@@ -7,61 +7,67 @@ import java.util.*;
 
 public class Utils {
 
-    public static List<String> soulList(List<Component> lore) {
+    public static List<String> soulList(List<Component> lores) {
         List<String> soulLore = new ArrayList<>();
-        for (Component s : lore) {
+        for (Component s : lores) {
             TextComponent textComponent = (TextComponent) s;
             String content = textComponent.content().toLowerCase(Locale.ROOT);
-            if (content.matches("- +[A|a]ccumulates+ +\\d+ +(ice|dragon|fire|bone) +soul")) {
+            if (content.matches("- +[A|a]ccumulates+ +\\d+ +(ice|dragon|fire|shadow) +soul.")) {
                 soulLore.add(content);
             }
         }
         return soulLore;
     }
 
-
-    public static void removeSoul(HashMap<UUID, List<Soul>> mapping, int slotNumber, UUID playerID) {
-        if (mapping.containsKey(playerID)) {
-            List<Soul> soulList = mapping.get(playerID);
-            soulList.removeIf(soul -> soul.getSlot() == slotNumber);
-            mapping.replace(playerID, soulList);
-        }
-    }
-
-    public static void addSoul(HashMap<UUID, List<Soul>> mapping, Soul soul, UUID playerID) {
-        List<Soul> soulList = null;
-        if (mapping.containsKey(playerID)) {
-            soulList = mapping.get(playerID);
-            soulList.add(soul);
-        }
-        mapping.replace(playerID, soulList);
-
-    }
-
-    public static boolean hasSoul(HashMap<UUID, List<Soul>> mapping, int soulID, UUID playerID) {
-        if (mapping.containsKey(playerID)) {
-            List<Soul> soulList = mapping.get(playerID);
-            for (Soul soul : soulList) {
-                if (soul.getSoulID() == soulID) {
-                    return true;
+    public static void removeCharge(HashMap<UUID, List<Soul>> mapping, List<Component> lores, UUID playerID) {
+        List<String> soulList = soulList(lores);
+        if (!lores.isEmpty()) {
+            if (mapping.containsKey(playerID)) {
+                List<Soul> souls = mapping.get(playerID);
+                for (String lore: soulList){
+                    int soulID = getID(lore);
+                    Soul soul = souls.get(soulID);
+                    soul.setCharges(-Integer.parseInt(lore.replaceAll("[\\D]", "")));
                 }
             }
         }
-        return false;
     }
 
-    public static Soul toSoul(List<Component> lore) {
-        List<String> soulList = soulList(lore);
-        for (String soulLore : soulList) {
-            if (soulLore.contains("dragon"))
-                return new DragonSoul();
-            else if (soulLore.contains("bone"))
-                return new ShadowSoul();
-            else if (soulLore.contains("ice"))
-                return new IceSoul();
-            else if (soulLore.contains("fire"))
-                return new FireSoul();
+    public static void addCharge(HashMap<UUID, List<Soul>> mapping, List<Component> lores, UUID playerID) {
+        List<String> soulList = soulList(lores);
+        if (!lores.isEmpty()) {
+            if (mapping.containsKey(playerID)) {
+                List<Soul> souls = mapping.get(playerID);
+                for (String lore: soulList){
+                    int soulID = getID(lore);
+                    Soul soul = souls.get(soulID);
+                    soul.setCharges(Integer.parseInt(lore.replaceAll("[\\D]", "")));
+                }
+            }
         }
-        return null;
+    }
+
+//    public static boolean hasSoul(HashMap<UUID, List<Soul>> mapping, int soulID, UUID playerID) {
+//        if (mapping.containsKey(playerID)) {
+//            List<Soul> soulList = mapping.get(playerID);
+//            for (Soul soul : soulList) {
+//                if (soul.getSoulID() == soulID) {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
+
+    public static int getID(String lore) {
+        if (lore.contains("dragon"))
+            return 3;
+        else if (lore.contains("shadow"))
+            return 2;
+        else if (lore.contains("ice"))
+            return 0;
+        else if (lore.contains("fire"))
+            return 1;
+        else return -1;
     }
 }

@@ -18,8 +18,7 @@ public class ArmorWear implements Listener {
             if (e.getOldArmorPiece().hasItemMeta()) {
                 try {
                     if (e.getOldArmorPiece().getItemMeta().hasLore()) {
-                        int slot = e.getType().getSlot();
-                        Utils.removeSoul(main.souls, slot, player.getUniqueId());
+                        Utils.removeCharge(main.souls, e.getOldArmorPiece().lore(), player.getUniqueId());
                     }
                 } catch (NullPointerException exception) {
                     Bukkit.getConsoleSender().sendMessage("Old Armor");
@@ -32,10 +31,7 @@ public class ArmorWear implements Listener {
             if (e.getNewArmorPiece().hasItemMeta()) {
                 try {
                     if (e.getNewArmorPiece().getItemMeta().hasLore()) {
-                        Soul soul = Utils.toSoul(e.getNewArmorPiece().lore());
-                        int slot = e.getType().getSlot();
-                        soul.setSlot(slot);
-                        Utils.addSoul(main.souls, soul, player.getUniqueId());
+                        Utils.addCharge(main.souls, e.getNewArmorPiece().lore(), player.getUniqueId());
                     }
                 } catch (NullPointerException exception) {
                     Bukkit.getConsoleSender().sendMessage("New Armor");
